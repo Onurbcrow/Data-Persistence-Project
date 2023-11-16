@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class MainManager : MonoBehaviour
 {
+     
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text highScore;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -18,10 +20,13 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
+
+    // Start is called before the first frame update   
     
-    // Start is called before the first frame update
+
     void Start()
     {
+        highScore.text = SaveScore.instance.nome + SaveScore.instance.pontuacao;
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -65,12 +70,24 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        SaveScore.instance.pontos = m_Points;
+        
+        ScoreText.text ="Pontos: " +  m_Points;
+        
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        SaveScore.instance.Save();
     }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    
+
 }
